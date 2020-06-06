@@ -254,6 +254,20 @@ STATIC mp_obj_t bma42x_BMA42X_get_reg(mp_obj_t self_in, mp_obj_t reg_in)
 STATIC MP_DEFINE_CONST_FUN_OBJ_2(bma42x_BMA42X_get_reg_obj,
 	                         bma42x_BMA42X_get_reg);
 
+STATIC mp_obj_t bma42x_BMA42X_get_temperature(mp_obj_t self_in, mp_obj_t temp_unit_in)
+{
+    bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(self_in);
+    uint8_t temp_unit = mp_obj_get_int(temp_unit_in);
+    int32_t temp;
+
+    check_result(bma4_get_temperature(&temp, temp_unit, &self->dev));
+
+    return MP_OBJ_NEW_SMALL_INT(temp);
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_2(bma42x_BMA42X_get_temperature_obj,
+	                         bma42x_BMA42X_get_temperature);
+
+
 STATIC mp_obj_t bma42x_BMA42X_init(mp_obj_t self_in)
 {
     bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(self_in);
@@ -414,6 +428,7 @@ STATIC const mp_rom_map_elem_t bma42x_BMA42X_locals_dict_table[] = {
     BMA4_EXPORT_OBJ(feature_enable),
     BMA4_EXPORT_OBJ(get_offset_comp),
     BMA4_EXPORT_OBJ(get_reg),
+    BMA4_EXPORT_OBJ(get_temperature),
     BMA4_EXPORT_OBJ(init),
     BMA4_EXPORT_OBJ(map_interrupt),
     BMA4_EXPORT_OBJ(read_accel_xyz),
@@ -465,6 +480,12 @@ STATIC const mp_map_elem_t bma42x_module_globals_table[] = {
     BMA4_EXPORT_CONST(OUTPUT_DATA_RATE_100HZ),
     BMA4_EXPORT_CONST(CIC_AVG_MODE),
     BMA4_EXPORT_CONST(CONTINUOUS_MODE),
+
+    // Temp unit
+    BMA4_EXPORT_CONST(SCALE_TEMP),
+    BMA4_EXPORT_CONST(DEG),
+    BMA4_EXPORT_CONST(FAHREN),
+    BMA4_EXPORT_CONST(KELVIN),
 
     BMA421_EXPORT_CONST(STEP_CNTR),
     BMA421_EXPORT_CONST(STEP_ACT),
