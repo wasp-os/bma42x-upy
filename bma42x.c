@@ -325,6 +325,54 @@ STATIC mp_obj_t bma42x_BMA42X_set_accel_config(size_t n_args, const mp_obj_t *ar
 STATIC MP_DEFINE_CONST_FUN_OBJ_KW(bma42x_BMA42X_set_accel_config_obj, 1,
 	                          bma42x_BMA42X_set_accel_config);
 
+STATIC bma42x_BMA42X_obj_t *parse_args_any_no_mot(
+		size_t n_args, const mp_obj_t *args, mp_map_t *kw_args,
+		struct bma421_any_no_mot_config *config)
+{
+    bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(args[0]);
+
+    static const mp_arg_t allowed_args[] = {
+	{ MP_QSTR_duration,  MP_ARG_INT, {.u_int = 5 } },
+	{ MP_QSTR_threshold, MP_ARG_INT, {.u_int = 0xaa } },
+	{ MP_QSTR_axes_en,   MP_ARG_INT, {.u_int = BMA421_EN_ALL_AXIS } },
+    };
+    mp_arg_val_t vals[3];
+    mp_arg_parse_all(n_args-1, args+1, kw_args, 3, allowed_args, vals);
+
+    // order must match allowed_args
+    config->duration = vals[0].u_int;
+    config->threshold = vals[1].u_int;
+    config->axes_en = vals[2].u_int;
+
+    return self;
+}
+
+STATIC mp_obj_t bma42x_BMA42X_set_any_mot_config(size_t n_args, const mp_obj_t *args,
+	                                         mp_map_t *kw_args)
+{
+    struct bma421_any_no_mot_config conf;
+    bma42x_BMA42X_obj_t *self = parse_args_any_no_mot(n_args, args, kw_args, &conf);
+
+    check_result(bma421_set_any_mot_config(&conf, &self->dev));
+
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_KW(bma42x_BMA42X_set_any_mot_config_obj, 1,
+	                          bma42x_BMA42X_set_any_mot_config);
+
+STATIC mp_obj_t bma42x_BMA42X_set_no_mot_config(size_t n_args, const mp_obj_t *args,
+	                                         mp_map_t *kw_args)
+{
+    struct bma421_any_no_mot_config conf;
+    bma42x_BMA42X_obj_t *self = parse_args_any_no_mot(n_args, args, kw_args, &conf);
+
+    check_result(bma421_set_no_mot_config(&conf, &self->dev));
+
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_KW(bma42x_BMA42X_set_no_mot_config_obj, 1,
+	                          bma42x_BMA42X_set_no_mot_config);
+
 define_bma42x_BMA42X_set(bool, bma4, set_accel_enable);
 define_bma42x_BMA42X_set(uint8_t, bma4, set_command_register);
 define_bma42x_BMA42X_set(uint8_t, bma4, set_offset_comp);
@@ -372,6 +420,8 @@ STATIC const mp_rom_map_elem_t bma42x_BMA42X_locals_dict_table[] = {
     BMA4_EXPORT_OBJ(read_int_status),
     BMA4_EXPORT_OBJ(set_accel_config),
     BMA4_EXPORT_OBJ(set_accel_enable),
+    BMA4_EXPORT_OBJ(set_any_mot_config),
+    BMA4_EXPORT_OBJ(set_no_mot_config),
     BMA4_EXPORT_OBJ(set_command_register),
     BMA4_EXPORT_OBJ(set_offset_comp),
     BMA4_EXPORT_OBJ(set_reg),
@@ -423,7 +473,17 @@ STATIC const mp_map_elem_t bma42x_module_globals_table[] = {
     BMA421_EXPORT_CONST(DOUBLE_TAP),
 
     BMA4_EXPORT_CONST(INTR1_MAP),
+    BMA4_EXPORT_CONST(INTR2_MAP),
+
     BMA421_EXPORT_CONST(STEP_CNTR_INT),
+    BMA421_EXPORT_CONST(ANY_MOT_INT),
+    BMA421_EXPORT_CONST(NO_MOT_INT),
+
+    BMA421_EXPORT_CONST(DIS_ALL_AXIS),
+    BMA421_EXPORT_CONST(X_AXIS_EN),
+    BMA421_EXPORT_CONST(Y_AXIS_EN),
+    BMA421_EXPORT_CONST(Z_AXIS_EN),
+    BMA421_EXPORT_CONST(EN_ALL_AXIS),
 };
 
 STATIC MP_DEFINE_CONST_DICT (mp_module_bma42x_globals, bma42x_module_globals_table );
