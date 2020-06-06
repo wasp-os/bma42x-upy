@@ -264,6 +264,20 @@ STATIC mp_obj_t bma42x_BMA42X_init(mp_obj_t self_in)
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(bma42x_BMA42X_init_obj, bma42x_BMA42X_init);
 
+STATIC mp_obj_t bma42x_BMA42X_map_interrupt(size_t n_args, const mp_obj_t *args)
+{
+    bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(args[0]);
+    uint8_t int_line = mp_obj_get_int(args[1]);
+    uint16_t int_map = mp_obj_get_int(args[2]);
+    bool enable = mp_obj_get_int(args[3]);
+
+    check_result(bma421_map_interrupt(int_line, int_map, enable, &self->dev));
+
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR(bma42x_BMA42X_map_interrupt_obj, 4,
+	                           bma42x_BMA42X_map_interrupt);
+
 STATIC mp_obj_t bma42x_BMA42X_read_accel_xyz(mp_obj_t self_in)
 {
     bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(self_in);
@@ -280,6 +294,8 @@ STATIC mp_obj_t bma42x_BMA42X_read_accel_xyz(mp_obj_t self_in)
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(bma42x_BMA42X_read_accel_xyz_obj,
 				 bma42x_BMA42X_read_accel_xyz);
+
+define_bma42x_BMA42X_get(uint16_t, bma421, read_int_status);
 
 STATIC mp_obj_t bma42x_BMA42X_set_accel_config(size_t n_args, const mp_obj_t *args,
 	                                       mp_map_t *kw_args)
@@ -327,8 +343,9 @@ STATIC mp_obj_t bma42x_BMA42X_set_reg(mp_obj_t self_in, mp_obj_t reg_in,
 STATIC MP_DEFINE_CONST_FUN_OBJ_3(bma42x_BMA42X_set_reg_obj,
 	                         bma42x_BMA42X_set_reg);
 
-define_bma42x_BMA42X_get(uint32_t, bma421, step_counter_output);
 define_bma42x_BMA42X_set(bool, bma421, step_detector_enable);
+define_bma42x_BMA42X_get(uint32_t, bma421, step_counter_output);
+define_bma42x_BMA42X_set(uint8_t, bma421, step_counter_set_watermark);
 
 STATIC mp_obj_t bma42x_BMA42X_write_config_file(mp_obj_t self_in)
 {
@@ -350,14 +367,17 @@ STATIC const mp_rom_map_elem_t bma42x_BMA42X_locals_dict_table[] = {
     BMA4_EXPORT_OBJ(get_offset_comp),
     BMA4_EXPORT_OBJ(get_reg),
     BMA4_EXPORT_OBJ(init),
+    BMA4_EXPORT_OBJ(map_interrupt),
     BMA4_EXPORT_OBJ(read_accel_xyz),
+    BMA4_EXPORT_OBJ(read_int_status),
     BMA4_EXPORT_OBJ(set_accel_config),
     BMA4_EXPORT_OBJ(set_accel_enable),
     BMA4_EXPORT_OBJ(set_command_register),
     BMA4_EXPORT_OBJ(set_offset_comp),
     BMA4_EXPORT_OBJ(set_reg),
-    BMA4_EXPORT_OBJ(step_counter_output),
     BMA4_EXPORT_OBJ(step_detector_enable),
+    BMA4_EXPORT_OBJ(step_counter_output),
+    BMA4_EXPORT_OBJ(step_counter_set_watermark),
     BMA4_EXPORT_OBJ(write_config_file),
 };
 STATIC MP_DEFINE_CONST_DICT(bma42x_BMA42X_locals_dict, bma42x_BMA42X_locals_dict_table);
@@ -401,6 +421,9 @@ STATIC const mp_map_elem_t bma42x_module_globals_table[] = {
     BMA421_EXPORT_CONST(WRIST_WEAR),
     BMA421_EXPORT_CONST(SINGLE_TAP),
     BMA421_EXPORT_CONST(DOUBLE_TAP),
+
+    BMA4_EXPORT_CONST(INTR1_MAP),
+    BMA421_EXPORT_CONST(STEP_CNTR_INT),
 };
 
 STATIC MP_DEFINE_CONST_DICT (mp_module_bma42x_globals, bma42x_module_globals_table );

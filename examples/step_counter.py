@@ -9,8 +9,7 @@
 
 Example shows basic setup application of step counter feature.
 
-This example is a translation of the equivalent code in C
-(although the loop at the end is slightly different):
+This example is a translation of the C example of the same name:
 ../BMA423-Sensor-API/examples/generic/step_counter.c .
 """
 
@@ -64,10 +63,26 @@ bma.set_accel_config(**accel_conf)
 # Enable step counter
 bma.feature_enable(bma42x.STEP_CNTR, True)
 
+# Map the interrupt pin with that of step counter interrupts
+# Interrupt will  be generated when step activity is generated.
+bma.map_interrupt(bma42x.INTR1_MAP, bma42x.STEP_CNTR_INT, True)
+
+# Set water-mark level 1 to get interrupt after 20 steps.
+# Range of step counter interrupt is 0 to 20460(resolution of 20 steps).
+bma.step_counter_set_watermark(1)
+
 print("Move/perform the walk/step action with the sensor")
 while True:
-    # Get step counter output
-    step_out = bma.step_counter_output()
-    print("The step counter output is {}\r".format(step_out), end='')
+    # Read the interrupt register to check whether step counter interrupt is
+    # received
+    int_status = bma.read_int_status()
 
-    time.sleep(2)
+    # Check if step counter interrupt is triggered
+    if int_status & bma42x.STEP_CNTR_INT:
+        print("Step counter interrupt received")
+
+        # On interrupt, Get step counter output
+        step_out = bma.step_counter_output()
+        break
+
+print("The step counter output is {}".format(step_out))
