@@ -278,6 +278,18 @@ STATIC mp_obj_t bma42x_BMA42X_init(mp_obj_t self_in)
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(bma42x_BMA42X_init_obj, bma42x_BMA42X_init);
 
+
+STATIC mp_obj_t bma42x_BMA42X_reset_step_counter(mp_obj_t self_in)
+{
+    bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(self_in);
+
+    check_result(bma421_reset_step_counter(&self->dev));
+
+    return mp_const_none;
+}
+
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(bma42x_BMA42X_reset_step_counter_obj, bma42x_BMA42X_reset_step_counter);
+
 STATIC mp_obj_t bma42x_BMA42X_map_interrupt(size_t n_args, const mp_obj_t *args)
 {
     bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(args[0]);
@@ -434,6 +446,7 @@ STATIC const mp_rom_map_elem_t bma42x_BMA42X_locals_dict_table[] = {
     BMA4_EXPORT_OBJ(read_accel_xyz),
     BMA4_EXPORT_OBJ(read_int_status),
     BMA4_EXPORT_OBJ(set_accel_config),
+    BMA4_EXPORT_OBJ(reset_step_counter),
     BMA4_EXPORT_OBJ(set_accel_enable),
     BMA4_EXPORT_OBJ(set_any_mot_config),
     BMA4_EXPORT_OBJ(set_no_mot_config),
