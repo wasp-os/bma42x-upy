@@ -390,6 +390,7 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_KW(bma42x_BMA42X_set_no_mot_config_obj, 1,
 define_bma42x_BMA42X_set(bool, bma4, set_accel_enable);
 define_bma42x_BMA42X_set(uint8_t, bma4, set_command_register);
 define_bma42x_BMA42X_set(uint8_t, bma4, set_offset_comp);
+define_bma42x_BMA42X_set(uint8_t, bma421, reset_step_counter);
 
 STATIC mp_obj_t bma42x_BMA42X_set_reg(mp_obj_t self_in, mp_obj_t reg_in,
 				      mp_obj_t val_in)
@@ -434,6 +435,7 @@ STATIC const mp_rom_map_elem_t bma42x_BMA42X_locals_dict_table[] = {
     BMA4_EXPORT_OBJ(read_accel_xyz),
     BMA4_EXPORT_OBJ(read_int_status),
     BMA4_EXPORT_OBJ(set_accel_config),
+    BMA4_EXPORT_OBJ(reset_step_counter),
     BMA4_EXPORT_OBJ(set_accel_enable),
     BMA4_EXPORT_OBJ(set_any_mot_config),
     BMA4_EXPORT_OBJ(set_no_mot_config),
