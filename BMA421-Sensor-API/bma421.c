@@ -789,7 +789,7 @@ int8_t bma421_step_counter_get_watermark(uint16_t *step_counter_wm, struct bma4_
 /*!
  * @brief This API resets the counted steps of step counter.
  */
-int8_t bma421_reset_step_counter(uint8_t enable, struct bma4_dev *dev)
+int8_t bma421_reset_step_counter(struct bma4_dev *dev)
 {
     uint8_t feature_config[BMA421_FEATURE_SIZE] = { 0 };
 

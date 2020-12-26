@@ -622,7 +622,7 @@ int8_t bma421_step_counter_get_watermark(uint16_t *step_counter_wm, struct bma4_
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_reset_step_counter(uint8_t enable, struct bma4_dev *dev);
+int8_t bma421_reset_step_counter(struct bma4_dev *dev);
 
 /*!
  * \ingroup bma421ApiStepC
