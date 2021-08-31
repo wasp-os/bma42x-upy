@@ -30,7 +30,7 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @file       bma421.h
+ * @file       bma42x.h
  * @date       2020-05-08
  * @version    V2.14.13
  *
@@ -38,143 +38,143 @@
 
 /**
  * \ingroup bma4xy
- * \defgroup bma421 BMA421
- * @brief Sensor driver for BMA421 sensor
+ * \defgroup bma42x BMA42X
+ * @brief Sensor driver for BMA42X sensor
  */
 
-#ifndef BMA421_H
-#define BMA421_H
+#ifndef BMA42X_H
+#define BMA42X_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 #include "bma4.h"
 
-/**\name Chip ID of BMA421 sensor */
-#define BMA421_CHIP_ID                 UINT8_C(0x11)
+/**\name Chip ID of BMA42X sensor */
+#define BMA42X_CHIP_ID                 UINT8_C(0x11)
 
-/**\ Configuration ID start position of BMA421 sensor */
-#define BMA421_CONFIG_ID_START_ADDR    UINT8_C(66)
+/**\ Configuration ID start position of BMA42X sensor */
+#define BMA42X_CONFIG_ID_START_ADDR    UINT8_C(66)
 
 /**\name Sensor feature size */
-#define BMA421_FEATURE_SIZE            UINT8_C(70)
-#define BMA421_ANY_MOT_LEN             UINT8_C(4)
+#define BMA42X_FEATURE_SIZE            UINT8_C(70)
+#define BMA42X_ANY_MOT_LEN             UINT8_C(4)
 
 /**\name Feature offset address */
-#define BMA421_ANY_MOT_OFFSET          UINT8_C(0x00)
-#define BMA421_NO_MOT_OFFSET           UINT8_C(0x04)
-#define BMA421_STEP_CNTR_PARAM_OFFSET  UINT8_C(0x08)
-#define BMA421_STEP_CNTR_OFFSET        UINT8_C(0x3A)
-#define BMA421_SINGLE_TAP_OFFSET       UINT8_C(0x3C)
-#define BMA421_DOUBLE_TAP_OFFSET       UINT8_C(0x3E)
-#define BMA421_WRIST_WEAR_OFFSET       UINT8_C(0x40)
-#define BMA421_CONFIG_ID_OFFSET        UINT8_C(0x42)
-#define BMA421_AXES_REMAP_OFFSET       UINT8_C(0x44)
+#define BMA42X_ANY_MOT_OFFSET          UINT8_C(0x00)
+#define BMA42X_NO_MOT_OFFSET           UINT8_C(0x04)
+#define BMA42X_STEP_CNTR_PARAM_OFFSET  UINT8_C(0x08)
+#define BMA42X_STEP_CNTR_OFFSET        UINT8_C(0x3A)
+#define BMA42X_SINGLE_TAP_OFFSET       UINT8_C(0x3C)
+#define BMA42X_DOUBLE_TAP_OFFSET       UINT8_C(0x3E)
+#define BMA42X_WRIST_WEAR_OFFSET       UINT8_C(0x40)
+#define BMA42X_CONFIG_ID_OFFSET        UINT8_C(0x42)
+#define BMA42X_AXES_REMAP_OFFSET       UINT8_C(0x44)
 
 /**\name Read/Write Lengths */
-#define BMA421_RD_WR_MIN_LEN           UINT8_C(2)
-#define BMA421_NO_MOT_RD_WR_LEN        (BMA421_ANY_MOT_LEN + BMA421_NO_MOT_OFFSET)
+#define BMA42X_RD_WR_MIN_LEN           UINT8_C(2)
+#define BMA42X_NO_MOT_RD_WR_LEN        (BMA42X_ANY_MOT_LEN + BMA42X_NO_MOT_OFFSET)
 
 /*! @name Mask definitions for major and minor config */
-#define BMA421_CONFIG_MAJOR_MSK        UINT16_C(0X3C0)
-#define BMA421_CONFIG_MINOR_MSK        UINT8_C(0X1F)
+#define BMA42X_CONFIG_MAJOR_MSK        UINT16_C(0X3C0)
+#define BMA42X_CONFIG_MINOR_MSK        UINT8_C(0X1F)
 
 /*! @name Bit position for major config */
-#define BMA421_CONFIG_MAJOR_POS        UINT8_C(0X06)
+#define BMA42X_CONFIG_MAJOR_POS        UINT8_C(0X06)
 
 /**************************************************************/
 /**\name    Re-map Axes */
 /**************************************************************/
-#define BMA421_X_AXIS_MASK             UINT8_C(0x03)
-#define BMA421_X_AXIS_SIGN_MASK        UINT8_C(0x04)
-#define BMA421_Y_AXIS_MASK             UINT8_C(0x18)
-#define BMA421_Y_AXIS_SIGN_MASK        UINT8_C(0x20)
-#define BMA421_Z_AXIS_MASK             UINT8_C(0xC0)
-#define BMA421_Z_AXIS_SIGN_MASK        UINT8_C(0x01)
+#define BMA42X_X_AXIS_MASK             UINT8_C(0x03)
+#define BMA42X_X_AXIS_SIGN_MASK        UINT8_C(0x04)
+#define BMA42X_Y_AXIS_MASK             UINT8_C(0x18)
+#define BMA42X_Y_AXIS_SIGN_MASK        UINT8_C(0x20)
+#define BMA42X_Z_AXIS_MASK             UINT8_C(0xC0)
+#define BMA42X_Z_AXIS_SIGN_MASK        UINT8_C(0x01)
 
 /**************************************************************/
 /**\name    Step Counter/Detector/Activity */
 /**************************************************************/
 /**\name Step counter/activity enable macros */
-#define BMA421_STEP_CNTR_EN_MSK        UINT8_C(0x10)
-#define BMA421_STEP_ACT_EN_MSK         UINT8_C(0x20)
+#define BMA42X_STEP_CNTR_EN_MSK        UINT8_C(0x10)
+#define BMA42X_STEP_ACT_EN_MSK         UINT8_C(0x20)
 
 /**\name Step counter water-mark macros */
-#define BMA421_STEP_CNTR_WM_MSK        UINT16_C(0x03FF)
+#define BMA42X_STEP_CNTR_WM_MSK        UINT16_C(0x03FF)
 
 /**\name Step counter reset macros */
-#define BMA421_STEP_CNTR_RST_POS       UINT8_C(2)
-#define BMA421_STEP_CNTR_RST_MSK       UINT8_C(0x04)
+#define BMA42X_STEP_CNTR_RST_POS       UINT8_C(2)
+#define BMA42X_STEP_CNTR_RST_MSK       UINT8_C(0x04)
 
 /**\name Step detector enable macros */
-#define BMA421_STEP_DETECTOR_EN_POS    UINT8_C(3)
-#define BMA421_STEP_DETECTOR_EN_MSK    UINT8_C(0x08)
+#define BMA42X_STEP_DETECTOR_EN_POS    UINT8_C(3)
+#define BMA42X_STEP_DETECTOR_EN_MSK    UINT8_C(0x08)
 
 /**\name Wrist-wear enable macros */
-#define BMA421_WRIST_WEAR_EN_MSK       UINT8_C(0x01)
+#define BMA42X_WRIST_WEAR_EN_MSK       UINT8_C(0x01)
 
 /**\name Step count output length*/
-#define BMA421_STEP_CNTR_DATA_SIZE     UINT16_C(4)
+#define BMA42X_STEP_CNTR_DATA_SIZE     UINT16_C(4)
 
 /**\name single tap enable macros */
-#define BMA421_SINGLE_TAP_EN_MSK       UINT8_C(0x01)
+#define BMA42X_SINGLE_TAP_EN_MSK       UINT8_C(0x01)
 
 /**\name double tap enable macros */
-#define BMA421_DOUBLE_TAP_EN_MSK       UINT8_C(0x01)
+#define BMA42X_DOUBLE_TAP_EN_MSK       UINT8_C(0x01)
 
 /**\name tap sensitivity macros */
-#define BMA421_TAP_SENS_POS            UINT8_C(1)
-#define BMA421_TAP_SENS_MSK            UINT8_C(0x0E)
+#define BMA42X_TAP_SENS_POS            UINT8_C(1)
+#define BMA42X_TAP_SENS_MSK            UINT8_C(0x0E)
 
 /**\name Tap selection macro */
-#define BMA421_TAP_SEL_POS             UINT8_C(4)
-#define BMA421_TAP_SEL_MSK             UINT8_C(0x10)
+#define BMA42X_TAP_SEL_POS             UINT8_C(4)
+#define BMA42X_TAP_SEL_MSK             UINT8_C(0x10)
 
 /**************************************************************/
 /**\name    Any/no Motion */
 /**************************************************************/
 /**\name Any/No motion threshold macros */
-#define BMA421_ANY_NO_MOT_THRES_MSK    UINT16_C(0x07FF)
+#define BMA42X_ANY_NO_MOT_THRES_MSK    UINT16_C(0x07FF)
 
 /**\name Any/No motion duration macros */
-#define BMA421_ANY_NO_MOT_DUR_MSK      UINT16_C(0x1FFF)
+#define BMA42X_ANY_NO_MOT_DUR_MSK      UINT16_C(0x1FFF)
 
 /**\name Any/No motion enable macros */
-#define BMA421_ANY_NO_MOT_AXIS_EN_POS  UINT8_C(0x0D)
-#define BMA421_ANY_NO_MOT_AXIS_EN_MSK  UINT16_C(0xE000)
+#define BMA42X_ANY_NO_MOT_AXIS_EN_POS  UINT8_C(0x0D)
+#define BMA42X_ANY_NO_MOT_AXIS_EN_MSK  UINT16_C(0xE000)
 
 /**************************************************************/
 /**\name    User macros */
 /**************************************************************/
 /**\name Any-motion/No-motion axis enable macros */
-#define BMA421_X_AXIS_EN               UINT8_C(0x01)
-#define BMA421_Y_AXIS_EN               UINT8_C(0x02)
-#define BMA421_Z_AXIS_EN               UINT8_C(0x04)
-#define BMA421_EN_ALL_AXIS             UINT8_C(0x07)
-#define BMA421_DIS_ALL_AXIS            UINT8_C(0x00)
+#define BMA42X_X_AXIS_EN               UINT8_C(0x01)
+#define BMA42X_Y_AXIS_EN               UINT8_C(0x02)
+#define BMA42X_Z_AXIS_EN               UINT8_C(0x04)
+#define BMA42X_EN_ALL_AXIS             UINT8_C(0x07)
+#define BMA42X_DIS_ALL_AXIS            UINT8_C(0x00)
 
 /**\name Feature enable macros for the sensor */
-#define BMA421_STEP_CNTR               UINT8_C(0x01)
-#define BMA421_STEP_ACT                UINT8_C(0x02)
-#define BMA421_WRIST_WEAR              UINT8_C(0x04)
-#define BMA421_SINGLE_TAP              UINT8_C(0x08)
-#define BMA421_DOUBLE_TAP              UINT8_C(0x10)
+#define BMA42X_STEP_CNTR               UINT8_C(0x01)
+#define BMA42X_STEP_ACT                UINT8_C(0x02)
+#define BMA42X_WRIST_WEAR              UINT8_C(0x04)
+#define BMA42X_SINGLE_TAP              UINT8_C(0x08)
+#define BMA42X_DOUBLE_TAP              UINT8_C(0x10)
 
 /**\name Interrupt status macros */
-#define BMA421_SINGLE_TAP_INT          UINT8_C(0x01)
-#define BMA421_STEP_CNTR_INT           UINT8_C(0x02)
-#define BMA421_ACTIVITY_INT            UINT8_C(0x04)
-#define BMA421_WRIST_WEAR_INT          UINT8_C(0x08)
-#define BMA421_DOUBLE_TAP_INT          UINT8_C(0x10)
-#define BMA421_ANY_MOT_INT             UINT8_C(0x20)
-#define BMA421_NO_MOT_INT              UINT8_C(0x40)
-#define BMA421_ERROR_INT               UINT8_C(0x80)
+#define BMA42X_SINGLE_TAP_INT          UINT8_C(0x01)
+#define BMA42X_STEP_CNTR_INT           UINT8_C(0x02)
+#define BMA42X_ACTIVITY_INT            UINT8_C(0x04)
+#define BMA42X_WRIST_WEAR_INT          UINT8_C(0x08)
+#define BMA42X_DOUBLE_TAP_INT          UINT8_C(0x10)
+#define BMA42X_ANY_MOT_INT             UINT8_C(0x20)
+#define BMA42X_NO_MOT_INT              UINT8_C(0x40)
+#define BMA42X_ERROR_INT               UINT8_C(0x80)
 
 /**\name Activity recognition macros */
-#define BMA421_USER_STATIONARY         UINT8_C(0x00)
-#define BMA421_USER_WALKING            UINT8_C(0x01)
-#define BMA421_USER_RUNNING            UINT8_C(0x02)
-#define BMA421_STATE_INVALID           UINT8_C(0x03)
+#define BMA42X_USER_STATIONARY         UINT8_C(0x00)
+#define BMA42X_USER_WALKING            UINT8_C(0x01)
+#define BMA42X_USER_RUNNING            UINT8_C(0x02)
+#define BMA42X_STATE_INVALID           UINT8_C(0x03)
 
 /******************************************************************************/
 /*!  @name         Structure Declarations                             */
@@ -183,7 +183,7 @@ extern "C" {
 /*!
  * @brief Any/No motion configuration
  */
-struct bma421_any_no_mot_config
+struct bma42x_any_no_mot_config
 {
     /*! Expressed in 50 Hz samples (20 ms) */
     uint16_t duration;
@@ -200,7 +200,7 @@ struct bma421_any_no_mot_config
 /*!
  * @brief Axes re-mapping configuration
  */
-struct bma421_axes_remap
+struct bma42x_axes_remap
 {
     /*! Re-mapped x-axis */
     uint8_t x_axis;
@@ -224,7 +224,7 @@ struct bma421_axes_remap
 /*!
  * @brief Step counter param settings
  */
-struct bma421_stepcounter_settings
+struct bma42x_stepcounter_settings
 {
     /*! Step Counter param 1 */
     uint16_t param1;
@@ -304,20 +304,20 @@ struct bma421_stepcounter_settings
 
 /***************************************************************************/
 
-/*!     BMA421 User Interface function prototypes
+/*!     BMA42X User Interface function prototypes
  ****************************************************************************/
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiInit Initialization
+ * \ingroup bma42x
+ * \defgroup bma42xApiInit Initialization
  * @brief Initialize the sensor and device structure
  */
 
 /*!
- * \ingroup bma421ApiInit
- * \page bma421_api_bma421_init bma421_init
+ * \ingroup bma42xApiInit
+ * \page bma42x_api_bma42x_init bma42x_init
  * \code
- * int8_t bma421_init(struct bma4_dev *dev);
+ * int8_t bma42x_init(struct bma4_dev *dev);
  * \endcode
  * @details This API is the entry point.
  * Call this API before using all other APIs.
@@ -329,19 +329,19 @@ struct bma421_stepcounter_settings
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_init(struct bma4_dev *dev);
+int8_t bma42x_init(struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiConfig ConfigFile
+ * \ingroup bma42x
+ * \defgroup bma42xApiConfig ConfigFile
  * @brief Write binary configuration in the sensor
  */
 
 /*!
- * \ingroup bma421ApiConfig
- * \page bma421_api_bma421_write_config_file bma421_write_config_file
+ * \ingroup bma42xApiConfig
+ * \page bma42x_api_bma42x_write_config_file bma42x_write_config_file
  * \code
- * int8_t bma421_write_config_file(struct bma4_dev *dev);
+ * int8_t bma42x_write_config_file(struct bma4_dev *dev);
  * \endcode
  * @details This API is used to upload the config file to enable the features of
  * the sensor.
@@ -352,19 +352,19 @@ int8_t bma421_init(struct bma4_dev *dev);
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_write_config_file(struct bma4_dev *dev);
+int8_t bma42x_write_config_file(struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiConfigId ConfigId
+ * \ingroup bma42x
+ * \defgroup bma42xApiConfigId ConfigId
  * @brief Get Configuration ID of the sensor
  */
 
 /*!
- * \ingroup bma421ApiConfig
- * \page bma421_api_bma421_get_config_id bma421_get_config_id
+ * \ingroup bma42xApiConfig
+ * \page bma42x_api_bma42x_get_config_id bma42x_get_config_id
  * \code
- * int8_t bma421_get_config_id(uint16_t *config_id, struct bma4_dev *dev);
+ * int8_t bma42x_get_config_id(uint16_t *config_id, struct bma4_dev *dev);
  * \endcode
  * @details This API is used to get the configuration id of the sensor.
  *
@@ -375,19 +375,19 @@ int8_t bma421_write_config_file(struct bma4_dev *dev);
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_get_config_id(uint16_t *config_id, struct bma4_dev *dev);
+int8_t bma42x_get_config_id(uint16_t *config_id, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiMapInt Map / Unmap Interrupt
+ * \ingroup bma42x
+ * \defgroup bma42xApiMapInt Map / Unmap Interrupt
  * @brief Map / Unmap user provided interrupt to interrupt pin1 or pin2 of the sensor
  */
 
 /*!
- * \ingroup bma421ApiMapInt
- * \page bma421_api_bma421_map_interrupt bma421_map_interrupt
+ * \ingroup bma42xApiMapInt
+ * \page bma42x_api_bma42x_map_interrupt bma42x_map_interrupt
  * \code
- * int8_t bma421_map_interrupt(uint8_t int_line, uint16_t int_map, uint8_t enable, struct bma4_dev *dev);
+ * int8_t bma42x_map_interrupt(uint8_t int_line, uint16_t int_map, uint8_t enable, struct bma4_dev *dev);
  * \endcode
  * @details This API sets/unsets the user provided interrupt to either
  * interrupt pin1 or pin2 in the sensor.
@@ -416,13 +416,13 @@ int8_t bma421_get_config_id(uint16_t *config_id, struct bma4_dev *dev);
  * @note Below macros specify the interrupts.
  *
  * Feature Interrupts
- *  - BMA421_STEP_CNTR_INT
- *  - BMA421_ACTIVITY_INT
- *  - BMA421_WRIST_WEAR_INT
- *  - BMA421_WAKEUP_INT
- *  - BMA421_ANY_MOT_INT
- *  - BMA421_NO_MOT_INT
- *  - BMA421_ERROR_INT
+ *  - BMA42X_STEP_CNTR_INT
+ *  - BMA42X_ACTIVITY_INT
+ *  - BMA42X_WRIST_WEAR_INT
+ *  - BMA42X_WAKEUP_INT
+ *  - BMA42X_ANY_MOT_INT
+ *  - BMA42X_NO_MOT_INT
+ *  - BMA42X_ERROR_INT
  *
  * Hardware Interrupts
  *  - BMA4_FIFO_FULL_INT
@@ -433,21 +433,21 @@ int8_t bma421_get_config_id(uint16_t *config_id, struct bma4_dev *dev);
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_map_interrupt(uint8_t int_line, uint16_t int_map, uint8_t enable, struct bma4_dev *dev);
+int8_t bma42x_map_interrupt(uint8_t int_line, uint16_t int_map, uint8_t enable, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiIntS Interrupt Status
+ * \ingroup bma42x
+ * \defgroup bma42xApiIntS Interrupt Status
  * @brief Read interrupt status of the sensor
  */
 
 /*!
- * \ingroup bma421ApiIntS
- * \page bma421_api_bma421_read_int_status bma421_read_int_status
+ * \ingroup bma42xApiIntS
+ * \page bma42x_api_bma42x_read_int_status bma42x_read_int_status
  * \code
- * int8_t bma421_read_int_status(uint16_t *int_status, struct bma4_dev *dev);
+ * int8_t bma42x_read_int_status(uint16_t *int_status, struct bma4_dev *dev);
  * \endcode
- * @details This API reads the bma421 interrupt status from the sensor.
+ * @details This API reads the bma42x interrupt status from the sensor.
  *
  * @param[out] int_status : Variable to store the interrupt status read from
  * the sensor.
@@ -456,13 +456,13 @@ int8_t bma421_map_interrupt(uint8_t int_line, uint16_t int_map, uint8_t enable, 
  *  @note Below macros are used to check the interrupt status.
  *
  * Feature Interrupts
- *  - BMA421_STEP_CNTR_INT
- *  - BMA421_ACTIVITY_INT
- *  - BMA421_WRIST_WEAR_INT
- *  - BMA421_WAKEUP_INT
- *  - BMA421_ANY_MOT_INT
- *  - BMA421_NO_MOT_INT
- *  - BMA421_ERROR_INT
+ *  - BMA42X_STEP_CNTR_INT
+ *  - BMA42X_ACTIVITY_INT
+ *  - BMA42X_WRIST_WEAR_INT
+ *  - BMA42X_WAKEUP_INT
+ *  - BMA42X_ANY_MOT_INT
+ *  - BMA42X_NO_MOT_INT
+ *  - BMA42X_ERROR_INT
  *
  * Hardware Interrupts
  *  - BMA4_FIFO_FULL_INT
@@ -473,24 +473,24 @@ int8_t bma421_map_interrupt(uint8_t int_line, uint16_t int_map, uint8_t enable, 
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_read_int_status(uint16_t *int_status, struct bma4_dev *dev);
+int8_t bma42x_read_int_status(uint16_t *int_status, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiFeat Sensor Feature
+ * \ingroup bma42x
+ * \defgroup bma42xApiFeat Sensor Feature
  * @brief Enables / Disables features of the sensor
  */
 
 /*!
- * \ingroup bma421ApiFeat
- * \page bma421_api_bma421_feature_enable bma421_feature_enable
+ * \ingroup bma42xApiFeat
+ * \page bma42x_api_bma42x_feature_enable bma42x_feature_enable
  * \code
- * int8_t bma421_feature_enable(uint8_t feature, uint8_t enable, struct bma4_dev *dev);
+ * int8_t bma42x_feature_enable(uint8_t feature, uint8_t enable, struct bma4_dev *dev);
  * \endcode
  * @details This API enables/disables the features of the sensor.
  *
  * @param[in] feature : Variable to specify the features which are to be set in
- * bma421 sensor.
+ * bma42x sensor.
  * @param[in] enable : Variable which specifies whether to enable or disable the
  * features in the bma456 sensor.
  *
@@ -504,30 +504,30 @@ int8_t bma421_read_int_status(uint16_t *int_status, struct bma4_dev *dev);
  * @param[in] dev : Structure instance of bma4_dev.
  *
  * @note User should use the below macros to enable or disable the
- * features of bma421 sensor
+ * features of bma42x sensor
  *
- *    - BMA421_STEP_CNTR
- *    - BMA421_ACTIVITY
- *    - BMA421_WAKEUP
- *    - BMA421_WRIST_WEAR
+ *    - BMA42X_STEP_CNTR
+ *    - BMA42X_ACTIVITY
+ *    - BMA42X_WAKEUP
+ *    - BMA42X_WRIST_WEAR
  *
  * @return Result of API execution status
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_feature_enable(uint8_t feature, uint8_t enable, struct bma4_dev *dev);
+int8_t bma42x_feature_enable(uint8_t feature, uint8_t enable, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiRemap Remap Axes
+ * \ingroup bma42x
+ * \defgroup bma42xApiRemap Remap Axes
  * @brief Set / Get x, y and z axis re-mapping in the sensor
  */
 
 /*!
- * \ingroup bma421ApiRemap
- * \page bma421_api_bma421_set_remap_axes bma421_set_remap_axes
+ * \ingroup bma42xApiRemap
+ * \page bma42x_api_bma42x_set_remap_axes bma42x_set_remap_axes
  * \code
- * int8_t bma421_set_remap_axes(const struct bma421_axes_remap *remap_data, struct bma4_dev *dev);
+ * int8_t bma42x_set_remap_axes(const struct bma42x_axes_remap *remap_data, struct bma4_dev *dev);
  * \endcode
  * @details This API performs x, y and z axis remapping in the sensor.
  *
@@ -538,37 +538,37 @@ int8_t bma421_feature_enable(uint8_t feature, uint8_t enable, struct bma4_dev *d
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_set_remap_axes(const struct bma421_axes_remap *remap_data, struct bma4_dev *dev);
+int8_t bma42x_set_remap_axes(const struct bma42x_axes_remap *remap_data, struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiRemap
- * \page bma421_api_bma421_get_remap_axes bma421_get_remap_axes
+ * \ingroup bma42xApiRemap
+ * \page bma42x_api_bma42x_get_remap_axes bma42x_get_remap_axes
  * \code
- * int8_t bma421_get_remap_axes(struct bma421_axes_remap *remap_data, struct bma4_dev *dev);
+ * int8_t bma42x_get_remap_axes(struct bma42x_axes_remap *remap_data, struct bma4_dev *dev);
  * \endcode
  * @details This API reads the x, y and z axis remap data from the sensor.
  *
  * @param[out] remap_data : Pointer to store axis remap data which is read
- * from the bma421 sensor.
+ * from the bma42x sensor.
  * @param[in] dev : Structure instance of bma4_dev
  *
  * @return Result of API execution status
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_get_remap_axes(struct bma421_axes_remap *remap_data, struct bma4_dev *dev);
+int8_t bma42x_get_remap_axes(struct bma42x_axes_remap *remap_data, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiStepC Step counter
+ * \ingroup bma42x
+ * \defgroup bma42xApiStepC Step counter
  * @brief Operations of step counter feature of the sensor
  */
 
 /*!
- * \ingroup bma421ApiStepC
- * \page bma421_api_bma421_step_counter_set_watermark bma421_step_counter_set_watermark
+ * \ingroup bma42xApiStepC
+ * \page bma42x_api_bma42x_step_counter_set_watermark bma42x_step_counter_set_watermark
  * \code
- * int8_t bma421_step_counter_set_watermark(uint16_t step_counter_wm, struct bma4_dev *dev);
+ * int8_t bma42x_step_counter_set_watermark(uint16_t step_counter_wm, struct bma4_dev *dev);
  * \endcode
  * @details This API sets the watermark level for step counter interrupt in
  * the sensor.
@@ -584,13 +584,13 @@ int8_t bma421_get_remap_axes(struct bma421_axes_remap *remap_data, struct bma4_d
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_step_counter_set_watermark(uint16_t step_counter_wm, struct bma4_dev *dev);
+int8_t bma42x_step_counter_set_watermark(uint16_t step_counter_wm, struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiStepC
- * \page bma421_api_bma421_step_counter_get_watermark bma421_step_counter_get_watermark
+ * \ingroup bma42xApiStepC
+ * \page bma42x_api_bma42x_step_counter_get_watermark bma42x_step_counter_get_watermark
  * \code
- * int8_t bma421_step_counter_get_watermark(uint16_t *step_counter_wm, struct bma4_dev *dev);
+ * int8_t bma42x_step_counter_get_watermark(uint16_t *step_counter_wm, struct bma4_dev *dev);
  * \endcode
  * @details This API gets the water mark level set for step counter interrupt
  * in the sensor
@@ -606,13 +606,13 @@ int8_t bma421_step_counter_set_watermark(uint16_t step_counter_wm, struct bma4_d
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_step_counter_get_watermark(uint16_t *step_counter_wm, struct bma4_dev *dev);
+int8_t bma42x_step_counter_get_watermark(uint16_t *step_counter_wm, struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiStepC
- * \page bma421_api_bma421_reset_step_counter bma421_reset_step_counter
+ * \ingroup bma42xApiStepC
+ * \page bma42x_api_bma42x_reset_step_counter bma42x_reset_step_counter
  * \code
- * int8_t bma421_reset_step_counter(struct bma4_dev *dev);
+ * int8_t bma42x_reset_step_counter(struct bma4_dev *dev);
  * \endcode
  * @details This API resets the counted steps of step counter.
  *
@@ -622,13 +622,13 @@ int8_t bma421_step_counter_get_watermark(uint16_t *step_counter_wm, struct bma4_
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_reset_step_counter(struct bma4_dev *dev);
+int8_t bma42x_reset_step_counter(struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiStepC
- * \page bma421_api_bma421_step_counter_output bma421_step_counter_output
+ * \ingroup bma42xApiStepC
+ * \page bma42x_api_bma42x_step_counter_output bma42x_step_counter_output
  * \code
- * int8_t bma421_step_counter_output(uint32_t *step_count, struct bma4_dev *dev);
+ * int8_t bma42x_step_counter_output(uint32_t *step_count, struct bma4_dev *dev);
  * \endcode
  * @details This API gets the number of counted steps of the step counter
  * feature from the sensor.
@@ -641,19 +641,19 @@ int8_t bma421_reset_step_counter(struct bma4_dev *dev);
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_step_counter_output(uint32_t *step_count, struct bma4_dev *dev);
+int8_t bma42x_step_counter_output(uint32_t *step_count, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiAct Activity Feature
+ * \ingroup bma42x
+ * \defgroup bma42xApiAct Activity Feature
  * @brief Get output for activity feature of the sensor
  */
 
 /*!
- * \ingroup bma421ApiAct
- * \page bma421_api_bma421_activity_output bma421_activity_output
+ * \ingroup bma42xApiAct
+ * \page bma42x_api_bma42x_activity_output bma42x_activity_output
  * \code
- * int8_t bma421_activity_output(uint8_t *activity, struct bma4_dev *dev);
+ * int8_t bma42x_activity_output(uint8_t *activity, struct bma4_dev *dev);
  * \endcode
  * @details This API gets the output for activity feature.
  *
@@ -663,10 +663,10 @@ int8_t bma421_step_counter_output(uint32_t *step_count, struct bma4_dev *dev);
  *@verbatim
  *       activity |   State
  *  --------------|------------------------
- *        0x00    | BMA421_USER_STATIONARY
- *        0x01    | BMA421_USER_WALKING
- *        0x02    | BMA421_USER_RUNNING
- *        0x03    | BMA421_STATE_INVALID
+ *        0x00    | BMA42X_USER_STATIONARY
+ *        0x01    | BMA42X_USER_WALKING
+ *        0x02    | BMA42X_USER_RUNNING
+ *        0x03    | BMA42X_STATE_INVALID
  *@endverbatim
  *
  * @param[in] dev : Structure instance of bma4_dev
@@ -675,13 +675,13 @@ int8_t bma421_step_counter_output(uint32_t *step_count, struct bma4_dev *dev);
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_activity_output(uint8_t *activity, struct bma4_dev *dev);
+int8_t bma42x_activity_output(uint8_t *activity, struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiStepC
- * \page bma421_api_bma421_stepcounter_get_parameter bma421_stepcounter_get_parameter
+ * \ingroup bma42xApiStepC
+ * \page bma42x_api_bma42x_stepcounter_get_parameter bma42x_stepcounter_get_parameter
  * \code
- * int8_t bma421_stepcounter_get_parameter(struct bma421_stepcounter_settings *setting, struct bma4_dev *dev);
+ * int8_t bma42x_stepcounter_get_parameter(struct bma42x_stepcounter_settings *setting, struct bma4_dev *dev);
  * \endcode
  * @details This API gets the parameter1 to parameter7 settings of the step
  * counter feature.
@@ -694,13 +694,13 @@ int8_t bma421_activity_output(uint8_t *activity, struct bma4_dev *dev);
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_stepcounter_get_parameter(struct bma421_stepcounter_settings *setting, struct bma4_dev *dev);
+int8_t bma42x_stepcounter_get_parameter(struct bma42x_stepcounter_settings *setting, struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiStepC
- * \page bma421_api_bma421_stepcounter_set_parameter bma421_stepcounter_set_parameter
+ * \ingroup bma42xApiStepC
+ * \page bma42x_api_bma42x_stepcounter_set_parameter bma42x_stepcounter_set_parameter
  * \code
- * int8_t bma421_stepcounter_set_parameter(const struct bma421_stepcounter_settings *setting, struct bma4_dev *dev);
+ * int8_t bma42x_stepcounter_set_parameter(const struct bma42x_stepcounter_settings *setting, struct bma4_dev *dev);
  * \endcode
  * @details This API sets the parameter1 to parameter7 settings of the step
  * counter feature in the sensor.
@@ -713,19 +713,19 @@ int8_t bma421_stepcounter_get_parameter(struct bma421_stepcounter_settings *sett
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_stepcounter_set_parameter(const struct bma421_stepcounter_settings *setting, struct bma4_dev *dev);
+int8_t bma42x_stepcounter_set_parameter(const struct bma42x_stepcounter_settings *setting, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiStepD Step detector
+ * \ingroup bma42x
+ * \defgroup bma42xApiStepD Step detector
  * @brief Operations of step detector feature of the sensor
  */
 
 /*!
- * \ingroup bma421ApiStepD
- * \page bma421_api_bma421_step_detector_enable bma421_step_detector_enable
+ * \ingroup bma42xApiStepD
+ * \page bma42x_api_bma42x_step_detector_enable bma42x_step_detector_enable
  * \code
- * int8_t bma421_step_detector_enable(uint8_t enable, struct bma4_dev *dev);
+ * int8_t bma42x_step_detector_enable(uint8_t enable, struct bma4_dev *dev);
  * \endcode
  * @details This API enables or disables the step detector feature in the
  * sensor.
@@ -745,19 +745,19 @@ int8_t bma421_stepcounter_set_parameter(const struct bma421_stepcounter_settings
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_step_detector_enable(uint8_t enable, struct bma4_dev *dev);
+int8_t bma42x_step_detector_enable(uint8_t enable, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiAnyMot Any motion Feature
+ * \ingroup bma42x
+ * \defgroup bma42xApiAnyMot Any motion Feature
  * @brief Functions of Any motion feature of the sensor
  */
 
 /*!
- * \ingroup bma421ApiAnyMot
- * \page bma421_api_bma421_set_any_motion_config bma421_set_any_motion_config
+ * \ingroup bma42xApiAnyMot
+ * \page bma42x_api_bma42x_set_any_motion_config bma42x_set_any_motion_config
  * \code
- * int8_t bma421_set_any_motion_config(const struct bma421_anymotion_config *any_motion, struct bma4_dev *dev);
+ * int8_t bma42x_set_any_motion_config(const struct bma42x_anymotion_config *any_motion, struct bma4_dev *dev);
  * \endcode
  * @details This API sets the configuration of any-motion feature in the sensor
  * This API enables/disables the any-motion feature according to the axis set.
@@ -792,11 +792,11 @@ int8_t bma421_step_detector_enable(uint8_t enable, struct bma4_dev *dev);
  *@verbatim
  *  Value    |  axis_en
  *  ---------|-------------------------
- *  0x00     |  BMA421_DIS_ALL_AXIS
- *  0x01     |  BMA421_X_AXIS_EN
- *  0x02     |  BMA421_Y_AXIS_EN
- *  0x04     |  BMA421_Z_AXIS_EN
- *  0x07     |  BMA421_EN_ALL_AXIS
+ *  0x00     |  BMA42X_DIS_ALL_AXIS
+ *  0x01     |  BMA42X_X_AXIS_EN
+ *  0x02     |  BMA42X_Y_AXIS_EN
+ *  0x04     |  BMA42X_Z_AXIS_EN
+ *  0x07     |  BMA42X_EN_ALL_AXIS
  *@endverbatim
  *
  * @param[in] dev               : Structure instance of bma4_dev
@@ -805,13 +805,13 @@ int8_t bma421_step_detector_enable(uint8_t enable, struct bma4_dev *dev);
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_set_any_mot_config(const struct bma421_any_no_mot_config *any_mot, struct bma4_dev *dev);
+int8_t bma42x_set_any_mot_config(const struct bma42x_any_no_mot_config *any_mot, struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiAnyMot
- * \page bma421_api_bma421_get_any_motion_config bma421_get_any_motion_config
+ * \ingroup bma42xApiAnyMot
+ * \page bma42x_api_bma42x_get_any_motion_config bma42x_get_any_motion_config
  * \code
- * int8_t bma421_get_any_motion_config(struct bma421_anymotion_config *any_motion, struct bma4_dev *dev);
+ * int8_t bma42x_get_any_motion_config(struct bma42x_anymotion_config *any_motion, struct bma4_dev *dev);
  * \endcode
  * @details This API gets the configuration of any-motion feature from the
  * sensor.
@@ -846,11 +846,11 @@ int8_t bma421_set_any_mot_config(const struct bma421_any_no_mot_config *any_mot,
  *@verbatim
  *  Value    |  axis_en
  *  ---------|-------------------------
- *  0x00     |  BMA421_DIS_ALL_AXIS
- *  0x01     |  BMA421_X_AXIS_EN
- *  0x02     |  BMA421_Y_AXIS_EN
- *  0x04     |  BMA421_Z_AXIS_EN
- *  0x07     |  BMA421_EN_ALL_AXIS
+ *  0x00     |  BMA42X_DIS_ALL_AXIS
+ *  0x01     |  BMA42X_X_AXIS_EN
+ *  0x02     |  BMA42X_Y_AXIS_EN
+ *  0x04     |  BMA42X_Z_AXIS_EN
+ *  0x07     |  BMA42X_EN_ALL_AXIS
  *@endverbatim
  *
  * @param[in] dev               : Structure instance of bma4_dev
@@ -859,19 +859,19 @@ int8_t bma421_set_any_mot_config(const struct bma421_any_no_mot_config *any_mot,
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_get_any_mot_config(struct bma421_any_no_mot_config *any_mot, struct bma4_dev *dev);
+int8_t bma42x_get_any_mot_config(struct bma42x_any_no_mot_config *any_mot, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiNomot No-Motion Feature
+ * \ingroup bma42x
+ * \defgroup bma42xApiNomot No-Motion Feature
  * @brief Operations of no-motion feature of the sensor
  */
 
 /*!
- * \ingroup bma421ApiNomot
- * \page bma421_api_bma421_set_no_motion_config bma421_set_no_motion_config
+ * \ingroup bma42xApiNomot
+ * \page bma42x_api_bma42x_set_no_motion_config bma42x_set_no_motion_config
  * \code
- * int8_t bma421_set_no_motion_config(const struct bma421_nomotion_config *no_motion, struct bma4_dev *dev);
+ * int8_t bma42x_set_no_motion_config(const struct bma42x_nomotion_config *no_motion, struct bma4_dev *dev);
  * \endcode
  * @details This API sets the configuration of no-motion feature in the sensor
  * This API enables/disables the no-motion feature according to the axis set.
@@ -906,11 +906,11 @@ int8_t bma421_get_any_mot_config(struct bma421_any_no_mot_config *any_mot, struc
  *@verbatim
  *  Value    |  axis_en
  *  ---------|-------------------------
- *  0x00     |  BMA421_DIS_ALL_AXIS
- *  0x01     |  BMA421_X_AXIS_EN
- *  0x02     |  BMA421_Y_AXIS_EN
- *  0x04     |  BMA421_Z_AXIS_EN
- *  0x07     |  BMA421_EN_ALL_AXIS
+ *  0x00     |  BMA42X_DIS_ALL_AXIS
+ *  0x01     |  BMA42X_X_AXIS_EN
+ *  0x02     |  BMA42X_Y_AXIS_EN
+ *  0x04     |  BMA42X_Z_AXIS_EN
+ *  0x07     |  BMA42X_EN_ALL_AXIS
  *@endverbatim
  *
  * @param[in] dev               : Structure instance of bma4_dev
@@ -919,13 +919,13 @@ int8_t bma421_get_any_mot_config(struct bma421_any_no_mot_config *any_mot, struc
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_set_no_mot_config(const struct bma421_any_no_mot_config *no_mot, struct bma4_dev *dev);
+int8_t bma42x_set_no_mot_config(const struct bma42x_any_no_mot_config *no_mot, struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiNomot
- * \page bma421_api_bma421_get_no_motion_config bma421_get_no_motion_config
+ * \ingroup bma42xApiNomot
+ * \page bma42x_api_bma42x_get_no_motion_config bma42x_get_no_motion_config
  * \code
- * int8_t bma421_get_no_motion_config(struct bma421_nomotion_config *no_motion, struct bma4_dev *dev);
+ * int8_t bma42x_get_no_motion_config(struct bma42x_nomotion_config *no_motion, struct bma4_dev *dev);
  * \endcode
  * @details This API gets the configuration of no-motion feature from the
  * sensor.
@@ -960,11 +960,11 @@ int8_t bma421_set_no_mot_config(const struct bma421_any_no_mot_config *no_mot, s
  *@verbatim
  *  Value    |  axis_en
  *  ---------|-------------------------
- *  0x00     |  BMA421_DIS_ALL_AXIS
- *  0x01     |  BMA421_X_AXIS_EN
- *  0x02     |  BMA421_Y_AXIS_EN
- *  0x04     |  BMA421_Z_AXIS_EN
- *  0x07     |  BMA421_EN_ALL_AXIS
+ *  0x00     |  BMA42X_DIS_ALL_AXIS
+ *  0x01     |  BMA42X_X_AXIS_EN
+ *  0x02     |  BMA42X_Y_AXIS_EN
+ *  0x04     |  BMA42X_Z_AXIS_EN
+ *  0x07     |  BMA42X_EN_ALL_AXIS
  *@endverbatim
  *
  * @param[in] dev               : Structure instance of bma4_dev
@@ -973,19 +973,19 @@ int8_t bma421_set_no_mot_config(const struct bma421_any_no_mot_config *no_mot, s
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_get_no_mot_config(struct bma421_any_no_mot_config *no_mot, struct bma4_dev *dev);
+int8_t bma42x_get_no_mot_config(struct bma42x_any_no_mot_config *no_mot, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiTap Single Tap and Double tap
+ * \ingroup bma42x
+ * \defgroup bma42xApiTap Single Tap and Double tap
  * @brief Single and Double tap feature operations
  */
 
 /*!
- * \ingroup bma421ApiTap
- * \page bma421_api_bma421_single_tap_set_sensitivity bma421_single_tap_set_sensitivity
+ * \ingroup bma42xApiTap
+ * \page bma42x_api_bma42x_single_tap_set_sensitivity bma42x_single_tap_set_sensitivity
  * \code
- * int8_t bma421_single_tap_set_sensitivity(uint8_t sensitivity, struct bma4_dev *dev);
+ * int8_t bma42x_single_tap_set_sensitivity(uint8_t sensitivity, struct bma4_dev *dev);
  * \endcode
  * @details This API sets the sensitivity of single tap wake-up feature in the sensor
  *
@@ -1005,13 +1005,13 @@ int8_t bma421_get_no_mot_config(struct bma421_any_no_mot_config *no_mot, struct 
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_single_tap_set_sensitivity(uint8_t sensitivity, struct bma4_dev *dev);
+int8_t bma42x_single_tap_set_sensitivity(uint8_t sensitivity, struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiTap
- * \page bma421_api_bma421_double_tap_set_sensitivity bma421_double_tap_set_sensitivity
+ * \ingroup bma42xApiTap
+ * \page bma42x_api_bma42x_double_tap_set_sensitivity bma42x_double_tap_set_sensitivity
  * \code
- * int8_t bma421_double_tap_set_sensitivity(uint8_t sensitivity, struct bma4_dev *dev);
+ * int8_t bma42x_double_tap_set_sensitivity(uint8_t sensitivity, struct bma4_dev *dev);
  * \endcode
  * @details This API sets the sensitivity of double tap wake-up feature in the sensor
  *
@@ -1031,13 +1031,13 @@ int8_t bma421_single_tap_set_sensitivity(uint8_t sensitivity, struct bma4_dev *d
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_double_tap_set_sensitivity(uint8_t sensitivity, struct bma4_dev *dev);
+int8_t bma42x_double_tap_set_sensitivity(uint8_t sensitivity, struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiTap
- * \page bma421_api_bma421_single_tap_get_sensitivity bma421_single_tap_get_sensitivity
+ * \ingroup bma42xApiTap
+ * \page bma42x_api_bma42x_single_tap_get_sensitivity bma42x_single_tap_get_sensitivity
  * \code
- * int8_t bma421_single_tap_get_sensitivity(uint8_t *sensitivity, struct bma4_dev *dev);
+ * int8_t bma42x_single_tap_get_sensitivity(uint8_t *sensitivity, struct bma4_dev *dev);
  * \endcode
  * @details This API gets the sensitivity of single tap wake up feature in the sensor
  *
@@ -1057,13 +1057,13 @@ int8_t bma421_double_tap_set_sensitivity(uint8_t sensitivity, struct bma4_dev *d
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_single_tap_get_sensitivity(uint8_t *sensitivity, struct bma4_dev *dev);
+int8_t bma42x_single_tap_get_sensitivity(uint8_t *sensitivity, struct bma4_dev *dev);
 
 /*!
- * \ingroup bma421ApiTap
- * \page bma421_api_bma421_double_tap_get_sensitivity bma421_double_tap_get_sensitivity
+ * \ingroup bma42xApiTap
+ * \page bma42x_api_bma42x_double_tap_get_sensitivity bma42x_double_tap_get_sensitivity
  * \code
- * int8_t bma421_double_tap_get_sensitivity(uint8_t *sensitivity, struct bma4_dev *dev);
+ * int8_t bma42x_double_tap_get_sensitivity(uint8_t *sensitivity, struct bma4_dev *dev);
  * \endcode
  * @details This API gets the sensitivity of double tap wake up feature in the sensor
  *
@@ -1083,19 +1083,19 @@ int8_t bma421_single_tap_get_sensitivity(uint8_t *sensitivity, struct bma4_dev *
  * @retval 0 -> Success
  * @retval < 0 -> Fail
  */
-int8_t bma421_double_tap_get_sensitivity(uint8_t *sensitivity, struct bma4_dev *dev);
+int8_t bma42x_double_tap_get_sensitivity(uint8_t *sensitivity, struct bma4_dev *dev);
 
 /**
- * \ingroup bma421
- * \defgroup bma421ApiVersionConfig Version Config
+ * \ingroup bma42x
+ * \defgroup bma42xApiVersionConfig Version Config
  * @brief Get version configuration of the sensor
  */
 
 /*!
- * \ingroup bma421ApiVersionConfig
- * \page bma421_api_bma422_huawei_get_version_config bma421_get_version_config
+ * \ingroup bma42xApiVersionConfig
+ * \page bma42x_api_bma422_huawei_get_version_config bma42x_get_version_config
  * \code
- * int8_t bma421_get_version_config(uint16_t *config_major, uint16_t *config_minor, struct bma4_dev *dev);
+ * int8_t bma42x_get_version_config(uint16_t *config_major, uint16_t *config_minor, struct bma4_dev *dev);
  * \endcode
  * @details This API is used to get the config file major and minor information.
  *
@@ -1106,7 +1106,7 @@ int8_t bma421_double_tap_get_sensitivity(uint8_t *sensitivity, struct bma4_dev *
  * @retval BMA4_OK - Success.
  * @retval BMA4_E_NULL_PTR - Error: Null pointer error
  */
-int8_t bma421_get_version_config(uint16_t *config_major, uint16_t *config_minor, struct bma4_dev *dev);
+int8_t bma42x_get_version_config(uint16_t *config_major, uint16_t *config_minor, struct bma4_dev *dev);
 
 #ifdef __cplusplus
 }
