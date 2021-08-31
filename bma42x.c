@@ -210,7 +210,8 @@ STATIC void bma42x_BMA42X_print(const mp_print_t *print, mp_obj_t self_in,
 {
     (void)kind;
     bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    mp_printf(print, "<BMA42X i2c=%p>", self->i2c_obj);
+    mp_printf(print, "<BMA42X i2c=%p chip_id=0x%x>",
+	      self->i2c_obj, self->dev.chip_id);
 }
 
 STATIC mp_obj_t bma42x_BMA42X_debug(mp_obj_t self_in, mp_obj_t enable_in)
