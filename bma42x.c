@@ -433,6 +433,28 @@ STATIC mp_obj_t bma42x_BMA42X_write_config_file(mp_obj_t self_in)
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(bma42x_BMA42X_write_config_file_obj,
 	                         bma42x_BMA42X_write_config_file);
 
+// See bma421.py for the format of `mapping_in`
+STATIC mp_obj_t bma42x_BMA42X_set_remap_axes(mp_obj_t self_in, mp_obj_t mapping_in)
+{
+    bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(self_in);
+    uint32_t mapping_packed = mp_obj_get_int(mapping_in);
+
+    const struct bma42x_axes_remap remap_data = {
+        .x_axis = (mapping_packed >> 7) & 0b11,
+        .y_axis = (mapping_packed >> 5) & 0b11,
+        .z_axis = (mapping_packed >> 3) & 0b11,
+        .x_axis_sign = ~((mapping_packed >> 2) & 0b1),
+        .y_axis_sign = ~((mapping_packed >> 1) & 0b1),
+        .z_axis_sign = ~(mapping_packed & 0b1),
+    };
+
+    check_result(bma42x_set_remap_axes(&remap_data, &self->dev));
+
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_2(bma42x_BMA42X_set_remap_axes_obj,
+                                 bma42x_BMA42X_set_remap_axes);
+
 #define BMA4_EXPORT_OBJ(x) \
     { MP_ROM_QSTR(MP_QSTR_##x), MP_ROM_PTR(&bma42x_BMA42X_##x##_obj) }
 
@@ -458,6 +480,7 @@ STATIC const mp_rom_map_elem_t bma42x_BMA42X_locals_dict_table[] = {
     BMA4_EXPORT_OBJ(step_counter_output),
     BMA4_EXPORT_OBJ(step_counter_set_watermark),
     BMA4_EXPORT_OBJ(write_config_file),
+    BMA4_EXPORT_OBJ(set_remap_axes),
 };
 STATIC MP_DEFINE_CONST_DICT(bma42x_BMA42X_locals_dict, bma42x_BMA42X_locals_dict_table);
 
