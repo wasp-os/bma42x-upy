@@ -455,6 +455,37 @@ STATIC mp_obj_t bma42x_BMA42X_set_remap_axes(mp_obj_t self_in, mp_obj_t mapping_
 STATIC MP_DEFINE_CONST_FUN_OBJ_2(bma42x_BMA42X_set_remap_axes_obj,
                                  bma42x_BMA42X_set_remap_axes);
 
+STATIC mp_obj_t bma42x_BMA42X_set_int_pin_config(size_t n_args, const mp_obj_t *args,
+	                                       mp_map_t *kw_args)
+{
+    bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(args[0]);
+
+    enum { ARG_int_line, ARG_edge_ctrl, ARG_lvl, ARG_od, ARG_output_en, ARG_input_en, };
+    static const mp_arg_t allowed_args[] = {
+        { MP_QSTR_int_line,        MP_ARG_INT, {.u_int = BMA4_INTR1_MAP } },
+	{ MP_QSTR_edge_ctrl,       MP_ARG_INT, {.u_int = BMA4_LEVEL_TRIGGER } },
+	{ MP_QSTR_lvl,             MP_ARG_INT, {.u_int = BMA4_ACTIVE_LOW } },
+	{ MP_QSTR_od,              MP_ARG_INT, {.u_int = BMA4_PUSH_PULL } },
+	{ MP_QSTR_output_en,       MP_ARG_INT, {.u_int = BMA4_OUTPUT_DISABLE } },
+        { MP_QSTR_input_en,        MP_ARG_INT, {.u_int = BMA4_INPUT_DISABLE } },
+    };
+    mp_arg_val_t vals[ARG_input_en+1];
+    mp_arg_parse_all(n_args-1, args+1, kw_args, ARG_input_en+1, allowed_args, vals);
+
+    struct bma4_int_pin_config conf = {
+        .edge_ctrl = vals[ARG_edge_ctrl].u_int,
+        .lvl = vals[ARG_lvl].u_int,
+        .od = vals[ARG_od].u_int,
+        .output_en = vals[ARG_output_en].u_int,
+        .input_en = vals[ARG_input_en].u_int,
+    };
+    check_result(bma4_set_int_pin_config(&conf, vals[ARG_int_line].u_int, &self->dev));
+
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_KW(bma42x_BMA42X_set_int_pin_config_obj, 1,
+	                          bma42x_BMA42X_set_int_pin_config);
+
 #define BMA4_EXPORT_OBJ(x) \
     { MP_ROM_QSTR(MP_QSTR_##x), MP_ROM_PTR(&bma42x_BMA42X_##x##_obj) }
 
@@ -481,6 +512,7 @@ STATIC const mp_rom_map_elem_t bma42x_BMA42X_locals_dict_table[] = {
     BMA4_EXPORT_OBJ(step_counter_set_watermark),
     BMA4_EXPORT_OBJ(write_config_file),
     BMA4_EXPORT_OBJ(set_remap_axes),
+    BMA4_EXPORT_OBJ(set_int_pin_config),
 };
 STATIC MP_DEFINE_CONST_DICT(bma42x_BMA42X_locals_dict, bma42x_BMA42X_locals_dict_table);
 
@@ -517,6 +549,12 @@ STATIC const mp_map_elem_t bma42x_module_globals_table[] = {
     BMA4_EXPORT_CONST(OUTPUT_DATA_RATE_100HZ),
     BMA4_EXPORT_CONST(CIC_AVG_MODE),
     BMA4_EXPORT_CONST(CONTINUOUS_MODE),
+    BMA4_EXPORT_CONST(EDGE_TRIGGER),
+    BMA4_EXPORT_CONST(LEVEL_TRIGGER),
+    BMA4_EXPORT_CONST(ACTIVE_LOW),
+    BMA4_EXPORT_CONST(ACTIVE_HIGH),
+    BMA4_EXPORT_CONST(PUSH_PULL),
+    BMA4_EXPORT_CONST(OPEN_DRAIN),
 
     // Temp unit
     BMA4_EXPORT_CONST(SCALE_TEMP),
@@ -536,6 +574,9 @@ STATIC const mp_map_elem_t bma42x_module_globals_table[] = {
     BMA42X_EXPORT_CONST(STEP_CNTR_INT),
     BMA42X_EXPORT_CONST(ANY_MOT_INT),
     BMA42X_EXPORT_CONST(NO_MOT_INT),
+    BMA42X_EXPORT_CONST(WRIST_WEAR_INT),
+    BMA42X_EXPORT_CONST(SINGLE_TAP_INT),
+    BMA42X_EXPORT_CONST(DOUBLE_TAP_INT),
 
     BMA42X_EXPORT_CONST(DIS_ALL_AXIS),
     BMA42X_EXPORT_CONST(X_AXIS_EN),
