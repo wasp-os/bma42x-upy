@@ -31,6 +31,8 @@
 #include "py/builtin.h"
 #include "py/mphal.h"
 #include "extmod/machine_i2c.h"
+#include "bma421.h"
+#include "bma425.h"
 #include "bma42x.h"
 
 STATIC const mp_obj_type_t bma42x_BMA42X_type;
@@ -486,6 +488,15 @@ STATIC mp_obj_t bma42x_BMA42X_set_int_pin_config(size_t n_args, const mp_obj_t *
 STATIC MP_DEFINE_CONST_FUN_OBJ_KW(bma42x_BMA42X_set_int_pin_config_obj, 1,
 	                          bma42x_BMA42X_set_int_pin_config);
 
+STATIC mp_obj_t bma42x_BMA42X_get_chip_id(mp_obj_t self_in)
+{
+    bma42x_BMA42X_obj_t *self = MP_OBJ_TO_PTR(self_in);
+
+    return MP_OBJ_NEW_SMALL_INT(self->dev.chip_id);
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(bma42x_BMA42X_get_chip_id_obj,
+	                         bma42x_BMA42X_get_chip_id);
+
 #define BMA4_EXPORT_OBJ(x) \
     { MP_ROM_QSTR(MP_QSTR_##x), MP_ROM_PTR(&bma42x_BMA42X_##x##_obj) }
 
@@ -513,6 +524,7 @@ STATIC const mp_rom_map_elem_t bma42x_BMA42X_locals_dict_table[] = {
     BMA4_EXPORT_OBJ(write_config_file),
     BMA4_EXPORT_OBJ(set_remap_axes),
     BMA4_EXPORT_OBJ(set_int_pin_config),
+    BMA4_EXPORT_OBJ(get_chip_id),
 };
 STATIC MP_DEFINE_CONST_DICT(bma42x_BMA42X_locals_dict, bma42x_BMA42X_locals_dict_table);
 
@@ -532,6 +544,10 @@ STATIC const mp_obj_type_t bma42x_BMA42X_type = {
 STATIC const mp_map_elem_t bma42x_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_OBJ_NEW_QSTR(MP_QSTR_bma42x) },
     { MP_ROM_QSTR(MP_QSTR_BMA42X), (mp_obj_t)&bma42x_BMA42X_type },
+
+    // Chip IDs
+    { MP_ROM_QSTR(MP_QSTR_BMA421_CHIP_ID), MP_ROM_INT(BMA421_CHIP_ID) },
+    { MP_ROM_QSTR(MP_QSTR_BMA425_CHIP_ID), MP_ROM_INT(BMA425_CHIP_ID) },
 
     // Registers
     BMA4_EXPORT_CONST(ACCEL_CONFIG_ADDR),
