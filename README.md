@@ -6,7 +6,7 @@ In the directory containing your [MicroPython external C
 modules](https://docs.micropython.org/en/latest/develop/cmodules.html) try:
 
 ~~~ sh
-git clone https://github.com/daniel-thompson/bma42x-upy
+git clone https://github.com/wasp-os/bma42x-upy
 cd bma42x-upy
 git submodule update --init
 ~~~
